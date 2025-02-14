@@ -30,10 +30,10 @@ galleria.enabled = true
 navbar_items = [
  { code = "en", nav_items = [
   { url = "$BASE_URL/", name = "Home" },
-  { url = "$BASE_URL/posts", name = "Posts" },
-  { url = "$BASE_URL/docs", name = "Docs" },
-  { url = "$BASE_URL/tags", name = "Tags" },
-  { url = "$BASE_URL/categories", name = "Categories" },
+#   { url = "$BASE_URL/posts", name = "Posts" },
+#   { url = "$BASE_URL/docs", name = "Docs" },
+#   { url = "$BASE_URL/tags", name = "Tags" },
+#   { url = "$BASE_URL/categories", name = "Categories" },
  ]}
 ]
 
@@ -41,42 +41,42 @@ navbar_items = [
 [extra.favicon]
 favicon_16x16 = "/icons/favicon-16x16.png"
 favicon_32x32 = "/icons/favicon-32x32.png"
-apple_touch_icon = "/icons/apple-touch-icon.png"
-safari_pinned_tab = "/icons/safari-pinned-tab.svg"
+apple_touch_icon = "/icons/favion_dark_180x180.png"
+safari_pinned_tab = "/icons/favicon_dark.svg"
 webmanifest = "/icons/site.webmanifest"
 
 # Author details
 [extra.author]
 name = "DeepThought"
-avatar = "/images/avatar.png"
+avatar = "/images/logo_300x300.png"
 
 # Social links
 [extra.social]
-email = "<email_id>"
-facebook = "<facebook_username>"
-github = "<github_username>"
-gitlab = "<gitlab_username>"
-keybase = "<keybase_username>"
-linkedin = "<linkedin_username>"
-stackoverflow = "<stackoverflow_userid>"
-twitter = "<twitter_username>"
-instagram = "<instagram_username>"
-behance = "<behance_username>"
-google_scholar = "<googlescholar_userid>"
-orcid = "<orcid_userid>"
-mastodon_username = "<mastadon_username>"
-mastodon_server = "<mastodon_server>"
+# email = "<email_id>"
+# facebook = "<facebook_username>"
+github = "FabianFelixKraus/LN-history"
+# gitlab = "<gitlab_username>"
+# keybase = "<keybase_username>"
+linkedin = "fabianfelixkraus"
+# stackoverflow = "<stackoverflow_userid>"
+# twitter = "<twitter_username>"
+# instagram = "<instagram_username>"
+# behance = "<behance_username>"
+# google_scholar = "<googlescholar_userid>"
+# orcid = "<orcid_userid>"
+# mastodon_username = "<mastadon_username>"
+# mastodon_server = "<mastodon_server>"
 
 
 # To add google analytics
-[extra.analytics]
-google = "<your_gtag>"
+# [extra.analytics]
+# google = "<your_gtag>"
 
 # To add disqus comments
-[extra.commenting]
-disqus = "<your_disqus_shortname>"
+# [extra.commenting]
+# disqus = "<your_disqus_shortname>"
 
 # To enable mapbox maps
-[extra.mapbox]
-enabled = true
-access_token = "<your_access_token>"
+# [extra.mapbox]
+# enabled = true
+# access_token = "<your_access_token>"
