@@ -17,5 +17,5 @@ The [theme](https://github.com/RatanShreshtha/DeepThought) was built by [Ratan K
 
 To update to the theme to the latest version use: 
 ```bash
-git submodule update --remote themes/linkita
+git submodule update --remote themes/DeepThought
 ```
