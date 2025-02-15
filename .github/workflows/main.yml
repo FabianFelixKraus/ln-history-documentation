@@ -23,7 +23,7 @@ jobs:
     - name: Deploy to VPS
       run: |
         ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /home/{{ secrets.VPS_USER }}/docker/ln-history-documentation
+          cd /home/cicd-user/docker/ln-history-documentation
           git pull origin main
           docker-compose up --build -d
           sudo systemctl restart caddy
