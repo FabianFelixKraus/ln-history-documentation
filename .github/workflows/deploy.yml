@@ -1,34 +1,19 @@
-name: Deploy Zola to GitHub Pages
-
-on:
-  push:
-    branches:
-      - main  # Trigger on push to main
-
+# On every push this script is executed
+on: push
+name: Build and deploy GH Pages
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/main'
     steps:
-      - name: Checkout repository
+      - name: checkout
         uses: actions/checkout@v4
-        with:
-          submodules: true  # Ensures submodules (themes) are fetched
-          fetch-depth: 0
-
-      - name: Install Zola
-        run: |
-          curl -s -L https://github.com/getzola/zola/releases/download/v0.19.1/zola-v0.19.1-x86_64-unknown-linux-gnu.tar.gz | tar -xz
-          chmod +x zola
-          sudo mv zola /usr/local/bin/
-
-      - name: Build the Zola site
-        run: zola build
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: public  # Zola builds the site into "public"
-          clean: true
-
+      - name: build_and_deploy
+        uses: shalzz/zola-deploy-action@master
+        env:
+          # Target branch
+          PAGES_BRANCH: gh-pages
+          # Provide personal access token
+          # TOKEN: ${{ secrets.TOKEN }}
+          # Or if publishing to the same repo, use the automatic token
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
