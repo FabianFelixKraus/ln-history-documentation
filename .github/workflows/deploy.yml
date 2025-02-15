@@ -1,0 +1,34 @@
+name: Deploy Zola to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # Ensures submodules (themes) are fetched
+          fetch-depth: 0
+
+      - name: Install Zola
+        run: |
+          curl -s -L https://github.com/getzola/zola/releases/download/v0.19.1/zola-v0.19.1-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+          chmod +x zola
+          sudo mv zola /usr/local/bin/
+
+      - name: Build the Zola site
+        run: zola build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public  # Zola builds the site into "public"
+          clean: true
+
