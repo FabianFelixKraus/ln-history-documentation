@@ -34,7 +34,7 @@ jobs:
           target: "~/docker/ln-history-documentation/public"
 
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v0.1.17
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
