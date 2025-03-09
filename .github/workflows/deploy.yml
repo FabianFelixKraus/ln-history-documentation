@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository (with submodules)
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Install Zola
         run: |
