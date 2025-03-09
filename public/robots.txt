@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: fabianfelixkraus.github.io/ln-history-documentation/sitemap.xml
+Sitemap: ln-history.info/sitemap.xml

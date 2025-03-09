@@ -38,4 +38,4 @@ To get an overall view of the topology we want to show different metrics of the 
 We try to find correlations of the Bitcoin Lightning Network with the Bitcoin blockchain. More precisely, we research if the cost of a payment in the Lightning Network correlates with the fees on the Bitcoin blockchain. Those results could be particularly interesting for (routing) nodes that need to manage their liquidity as  cost-efficient as possible.
 
 ## 💻 Api
-See [here](http://ln-history.info:8080/swagger/index.html) for the swagger documentation of our API. The backend code can be found on [GitHub](https://github.com/FabianFelixKraus/LN-history)
+See [here](https://api.ln-history.info) for the swagger documentation of our API. The backend code can be found on [GitHub](https://github.com/FabianFelixKraus/LN-history) or mirrored on my univerisities [GitLab](https://git.tu-berlin.de/lightning-network-analysis/ln-history)
