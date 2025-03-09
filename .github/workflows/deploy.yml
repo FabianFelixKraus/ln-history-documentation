@@ -30,8 +30,10 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_PRIVATE_KEY }}
+          port: 22
           source: "public/*"
           target: "~/docker/ln-history-documentation/public"
+          key_path: "/home/runner/.ssh/id_rsa"
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v0.1.7
