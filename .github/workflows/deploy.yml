@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.VPS_PRIVATE_KEY }}
           port: 22
           source: "public/*"
-          target: "~/docker/ln-history-documentation/public"
+          target: "~/docker/ln-history-documentation"
           debug: true
 
       - name: Deploy to VPS
