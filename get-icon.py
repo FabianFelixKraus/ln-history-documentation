@@ -5,6 +5,8 @@ from cairosvg import svg2png
 from PIL import Image
 import os
 
+PATH = "./static"
+
 def convert_png_to_ico(png_path, ico_path, sizes=[16, 32, 48, 64]):
     """Convert a PNG file to an ICO file with multiple sizes."""
     img = Image.open(png_path)
@@ -54,15 +56,14 @@ def draw_graph(G, pos, highlighted_pos, n, size, mode="light"):
     plt.axis("off")
     
     # Save SVG
-    output_dir = "./themes/DeepThought/static/icons"
+    output_dir = f"{PATH}/icons"
     svg_filename = f"favicon_{mode}.svg"
     plt.savefig(os.path.join(output_dir, svg_filename), format="svg", facecolor=bg_color, bbox_inches='tight')
     plt.close()
 
     # Different browser / versions
     # Convert SVG to PNG at different resolutions
-    # for size in [16, 32, 48, 150, 180, 192, 300, 384, 450]:
-    for size in [16, 32, 48, 180]:
+    for size in [16, 32, 48, 150, 180, 192, 300, 384, 450]:
         png_filename = f"favicon_{mode}_{size}x{size}.png"
         svg2png(url=os.path.join(output_dir, svg_filename), write_to=os.path.join(output_dir, png_filename), output_width=size, output_height=size)
         print(f"Saved {png_filename}")
@@ -81,7 +82,7 @@ def draw_graph(G, pos, highlighted_pos, n, size, mode="light"):
     # standard / logo
     size = 300
     png_filename = f"logo_{size}x{size}.png"
-    svg2png(url=os.path.join(output_dir, svg_filename), write_to=os.path.join("./themes/DeepThought/static/images", png_filename), output_width=size, output_height=size)
+    svg2png(url=os.path.join(output_dir, svg_filename), write_to=os.path.join(f"{PATH}/images", png_filename), output_width=size, output_height=size)
     
 
 def main():
@@ -90,11 +91,11 @@ def main():
     pos, highlighted_pos = position_nodes(seed=21, a=2, b=0.3, c=-1.1, d=-0.2, n=n)
     
     size=4
-    # draw_graph(G, pos, highlighted_pos, n, size=size, mode="light")
+    draw_graph(G, pos, highlighted_pos, n, size=size, mode="light")
     draw_graph(G, pos, highlighted_pos, n, size=size, mode="dark")
 
-    convert_png_to_ico("./themes/DeepThought/static/icons/favicon_dark_48x48.png",
-                   "./themes/DeepThought/static/icons/favicon.ico")
+    convert_png_to_ico(f"{PATH}/icons/favicon_dark_48x48.png",
+                   f"{PATH}/icons/favicon.ico")
 
 if __name__ == "__main__":
     main()
