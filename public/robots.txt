@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: ln-history.info/sitemap.xml
+Sitemap: https://ln-history.info/sitemap.xml

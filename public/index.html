@@ -31,7 +31,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
-  <link href="ln-history.info/deep-thought.css" rel="stylesheet" />
+  <link href="https://ln-history.info/deep-thought.css" rel="stylesheet" />
   
   
 
@@ -60,7 +60,7 @@
   <nav aria-label="section navigation" class="navbar is-light" role="navigation">
     <div class="container">
       <div class="navbar-brand">
-        <a class="navbar-item is-size-5 has-text-weight-bold" href="ln-history.info">LN history documentation</a>
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;ln-history.info">LN history documentation</a>
         <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -72,7 +72,7 @@
           
           
           
-          <a class="navbar-item has-text-weight-semibold" href="ln-history.info&#x2F;">
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;ln-history.info&#x2F;">
             Home
           </a>
           
@@ -176,31 +176,34 @@
     </div>
     <div class="content">
       <h2 id="zap-motivation">⚡️ Motivation</h2>
-<p>Since the beginning of Bitcoin on Janurary 3rd 2009, Bitcoin has kept many of its promises and is establishing itself as a store-of-value solution.
-Nonetheless Satoshi Nakamoto titled in the <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin Whitepaper</a> "Bitcoin: A Peer-to-Peer Electronic Cash System", emphesising on its use case as digital cash for peer to peer transactions. The Bitcoin blockchain, the leger that keeps track of every transaction, is limited in its scaleability. Keeping the Bitcoin blockchain as decentralized as possible, any idea of directly scaling it by e. g. increasing the storage size per block, failed.</p>
+<p>Since the beginning of Bitcoin on Janurary 3rd 2009, it has kept many of its promises and is establishing itself as a store-of-value solution.
+Nonetheless Satoshi Nakamoto titled in the <a href="https://bitcoin.org/bitcoin.pdf">Bitcoin Whitepaper</a> "Bitcoin: A Peer-to-Peer Electronic Cash System", emphesising on its use case as digital cash for peer to peer transactions. The Bitcoin blockchain, the leger that keeps track of every transaction, is limited in its scaleability. To keep the Bitcoin blockchain as decentralized as possible, any idea of directly scaling it by e. g. increasing the storage size per block, failed.</p>
 <p>With a constant rate of adoption, storing information on the Bitcoin blockchain is scarce. In 2024 transaction costs reached record highs, making it unaffordable for daily use.</p>
-<p>The Lightning Network - a second layer solution - deployed in 2018 on top of the Bitcoin blockchain, promises fast, cost-efficient payments, ultimatly scaling the transaction volume of Bitcoin.
-The technology of the Bitcoin Lightning Network is defined in <a href="https://github.com/lightning/bolts/tree/master">BOLTS</a> and is not trivial.
-Although more than seven years passed, there is still a lot to research about the Bitcoin Lightning Network.</p>
+<p>The Lightning Network - a second layer solution on top of Bitcoin - deployed in 2018, promises lightning fast and cheap payments, ultimatly scaling the transaction volume of Bitcoin.
+The technology of the Bitcoin Lightning Network is defined in <a href="https://github.com/lightning/bolts/tree/master">BOLTS</a>.
+Although more than seven years passed, there are open questions for research about the Bitcoin Lightning Network.</p>
 <h2 id="checkered-flag-goal">🏁 Goal</h2>
-<p>The aim of this open source project is to build a platform for researchers as well as node runners to help understand the (changing) topology of the Bitcoin Lightning Network.
-Through text, images, interactive graphics and  an API endpoint, users should get information about the history of the topology of the Bitcoin Lightning Network.</p>
-<p>See the section <a href="ln-history.info/#results">Results</a> for the current state of the analysis.
-See <a href="https://github.com/FabianFelixKraus/LN-history">here</a> for the code behind the analysis.</p>
+<p>The aim of this open source project is to build a platform for researchers as well as node runners to help understand the (changing) topology of the Bitcoin Lightning Network, making it more accessible.</p>
+<p>See the section ✨Results for the current state of the analysis.</p>
+<p>We also build a backend that exposes an <a href="https://ln-history.info/api.ln-history.info">API</a> that can be accessed to do one owns analysis. See <a href="https://github.com/FabianFelixKraus/LN-history">here</a> for the code behind the analysis.</p>
 <h2 id="bar-chart-data">📊 Data</h2>
-<p>Currently the analyzed data comes from <a href="https://github.com/cdecker">Christian Deckers</a> <a href="https://github.com/lnresearch/topology/tree/main">lnresearch</a> repository.</p>
-<h2 id="runner-female-arrow-right-process">🏃‍♀️‍➡️ Process</h2>
-<p>We use all recoreded gossip messages and reconstruct the networks topology at a given timestamp.</p>
-<h2 id="results">Results</h2>
+<p>The analyzed gossip messages come from <a href="https://github.com/cdecker">Christian Deckers</a> <a href="https://github.com/lnresearch/topology/tree/main">lnresearch</a> repository.</p>
+<p>The total number of recorded gossip messages shows that we collected over 100 Million gossip messages.</p>
+<p><img src="https://ln-history.info/01-01-data-set-analysis-total-number-of-gossip-messages.svg" alt="Number of recorded gossip messages grouped by type" /></p>
+<p>We can see that the number of channel update messages has been changing a lot.</p>
+<p><img src="https://ln-history.info/01-02-data-set-analysis-number-of-channel-update-messages.svg" alt="Number of channel update messages" /></p>
+<p>As the number of nodes in the Bitcoin Lightning Network rose, the number of node anouncement messages also rose.</p>
+<p><img src="https://ln-history.info/01-03-dataset-analysis-number-of-node-announcement-messages.svg" alt="Number of node announcement messages" /></p>
+<h2 id="sparkles-results">✨ Results</h2>
 <p>Currently we have two objectives of our analysis of the Lightning Networks history.</p>
 <ol>
 <li>Lightning Network metrics</li>
 </ol>
-<p>To get an overall view of the topology we want to show different metrics of the graph at different timestamps.</p>
+<p>To get an overall view of the topology we want to show different metrics of the topology at different timestamps.</p>
 <ol start="2">
 <li>Lightning Network vs Bitcoin Blockchain</li>
 </ol>
-<p>We try to find correlations of the Bitcoin Lightning Network with the Bitcoin blockchain. More precisely, we research if the cost of a payment in the Lightning Network correlates with the fees on the Bitcoin blockchain. Those results could be particularly interesting for (routing) nodes that need to manage their liquidity as  cost-efficient as possible.</p>
+<p>We try to find correlations of the Bitcoin Lightning Network with the Bitcoin blockchain. More precisely, we research if the cost of a payment in the Lightning Network correlates with the fees on the Bitcoin blockchain. Those results could be particularly interesting for (routing) nodes that need to manage their liquidity as cost-efficient as possible.</p>
 <h2 id="computer-api">💻 Api</h2>
 <p>See <a href="https://api.ln-history.info">here</a> for the swagger documentation of our API. The backend code can be found on <a href="https://github.com/FabianFelixKraus/LN-history">GitHub</a> or mirrored on my univerisities <a href="https://git.tu-berlin.de/lightning-network-analysis/ln-history">GitLab</a></p>
 
@@ -283,8 +286,8 @@ See <a href="https://github.com/FabianFelixKraus/LN-history">here</a> for the co
   <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
   
   
-  <script src="ln-history.info/elasticlunr.min.js"></script>
-  <script src="ln-history.info/search_index.en.js"></script><script src="ln-history.info/js/site.js"></script>
+  <script src="https://ln-history.info/elasticlunr.min.js"></script>
+  <script src="https://ln-history.info/search_index.en.js"></script><script src="https://ln-history.info/js/site.js"></script>
 
   
   
