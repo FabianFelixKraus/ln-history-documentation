@@ -14,7 +14,7 @@ author = "Fabian Kraus"
 # The site title. (type: string;)
 title = "LN history documentation"
 # The site description. (type: string;)
-description = "A small website to showcase my research about the Bitcoin Lightning Network."
+description = "A website to showcase my research about the Bitcoin Lightning Network."
 
 [markdown]
 highlight_code = true
@@ -29,9 +29,9 @@ galleria.enabled = true
 
 navbar_items = [
  { code = "en", nav_items = [
-  { url = "$BASE_URL/", name = "Home" },
-#   { url = "$BASE_URL/posts", name = "Posts" },
-#   { url = "$BASE_URL/docs", name = "Docs" },
+#  { url = "$BASE_URL/", name = "Home" },
+  { url = "$BASE_URL/logbook", name = "Logbook" },
+  { url = "$BASE_URL/architecture.svg", name = "Architecture" },
 #   { url = "$BASE_URL/tags", name = "Tags" },
 #   { url = "$BASE_URL/categories", name = "Categories" },
  ]}
@@ -47,14 +47,14 @@ webmanifest = "/icons/site.webmanifest"
 
 # Author details
 [extra.author]
-name = "DeepThought"
+name = "Fabian Kraus"
 avatar = "/images/logo_300x300.png"
 
 # Social links
 [extra.social]
 # email = "<email_id>"
 # facebook = "<facebook_username>"
-github = "FabianFelixKraus/LN-history"
+github = "ln-history"
 # gitlab = "<gitlab_username>"
 # keybase = "<keybase_username>"
 linkedin = "fabianfelixkraus"
