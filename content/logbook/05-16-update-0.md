@@ -7,7 +7,7 @@ date = "2025-05-16"
 
 ## 🎉 Acceptance for Summer of Bitcoin 2025
 
-My application for [Summer of Bitcoin 2025](https://www.summerofbitcoin.org/) got accepted and I am very grateful to bring my project: `ln-history` to live!
+My application for [Summer of Bitcoin 2025](https://www.summerofbitcoin.org/) got accepted and I am very grateful to bring my project: `ln-history` to life!
 [René Pickhardt](https://github.com/renepickhardt) is going to be my mentor.
 We already had our official "Kickoff" meeting and I am confident to finish this project.
 
