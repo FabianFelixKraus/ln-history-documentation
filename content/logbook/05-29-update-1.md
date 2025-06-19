@@ -1,7 +1,7 @@
 +++
-title = "2025-05-16 - Logbook 0 - Kickoff"
-description = "Kickoff of ln-history"
-date = "2025-05-16"
+title = "2025-05-29 - Logbook 1 - First Update"
+description = "First update on my work progress"
+date = "2025-05-29"
 +++
 
 ## 🏋️ Project implementation

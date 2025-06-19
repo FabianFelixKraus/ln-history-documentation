@@ -20,7 +20,7 @@ Additionaly I grouped the issues into `milestones` to divide the project into sm
 
 ### Updates to the project structure
 
-After the kickoff meeting it became clear, that for the first version of `ln-history` a graph database might not be the best solution technically. 
+After the kickoff meeting it became clear, that for the first version of `ln-history-data` a graph database might not be the best solution technically. 
 I will go through the milestones and the next issues and update them accordingly. 
 I do not want to spend much time planning and managing my project, instead I want to get this done an actually work on the issues. Therefore I will keep them as minimal as possible. 
 
