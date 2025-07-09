@@ -41,13 +41,24 @@ To improve performance—especially for tasks like duplication detection—`ln-h
 
 ## Cache Keys
 
-### 1. Duplicate Gossip Detection
+### 1a. Duplicate Gossip Detection
 
 To avoid reprocessing previously seen gossip messages, the cache stores an entry keyed by the SHA256 hash of the raw gossip bytes (especially useful when handling older messages):
 
 - **Key format:** `gossip:{gossip_id}`
 - **Type:** Simple key with a dummy value (e.g., `"1"`)
 - **Purpose:** Fast O(1) existence checks. If the key exists, the message has already been processed.
+
+### 1b. Temporary Node ID Caching
+
+During initial project setup, the platform temporarily caches known `node_id`s to reduce database load when checking for node existence.
+
+- **Key format:** `node:{node_id}`
+- **Type:** Simple key with a dummy value (e.g., `"1"`)
+- **Purpose:** Prevents repeated PostgreSQL lookups for node presence during bulk imports or replayed gossip events.
+
+⚠️ This cache is **not permanent** and can be safely cleared once the setup phase is complete.
+
 
 ### 2. Message Observation Tracking
 
