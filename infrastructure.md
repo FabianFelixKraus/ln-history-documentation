@@ -64,4 +64,4 @@ For analysis purposes, the cache tracks which of the platform's own nodes receiv
     "node_id_1": [timestamp_1, timestamp_3],
     "node_id_2": [timestamp_2]
   }
-Purpose: Enables temporal analysis of gossip message propagation and observation across nodes.
+- **Purpose**: Enables temporal analysis of gossip message propagation and observation across nodes.
