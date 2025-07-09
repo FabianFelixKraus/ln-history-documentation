@@ -65,3 +65,105 @@ For analysis purposes, the cache tracks which of the platform's own nodes receiv
     "node_id_2": [timestamp_2]
   }
 - **Purpose**: Enables temporal analysis of gossip message propagation and observation across nodes.
+
+
+
+## 📚 Event Model Overview in `ln-history`
+
+In the `ln-history` data platform, we distinguish between two types of events:
+
+### 🔌 `PluginEvent`: Raw Data from Core Lightning Plugin
+
+A `PluginEvent` is the raw event data emitted by the [`gossip-publisher-zmq`](https://github.com/ln-history/gossip-publisher-zmq) plugin for Core Lightning. These events are Python `dict` objects (or `TypedDict`s) and are deliberately kept **loosely structured and flexible**, allowing the plugin to forward various gossip message types **without performing validation** or enforcing schema constraints.
+
+**Benefits of this approach:**
+- Lower dependency footprint: users can easily consume and forward events without strict schema enforcement.
+- Faster iteration: the plugin remains lightweight and generic, acting only as a forwarder.
+
+The following classes define the structure of plugin events:
+
+```python
+# Metadata for each event
+class PluginEventMetadata(TypedDict):
+    type: int
+    timestamp: int
+    sender_node_id: str
+    length: str  # Length in bytes, excluding 2-byte message type prefix
+
+# Base structure for all plugin events
+class BasePluginEvent(TypedDict):
+    metadata: PluginEventMetadata
+    raw_gossip_bytes: bytes
+
+# Extended plugin event types
+class PluginChannelAnnouncementEvent(BasePluginEvent):
+    parsed: ChannelAnnouncementDict
+
+class PluginNodeAnnouncementEvent(BasePluginEvent):
+    parsed: NodeAnnouncementDict
+
+class PluginChannelUpdateEvent(BasePluginEvent):
+    parsed: ChannelUpdateDict
+
+ParsedGossipDict = Union[
+    ChannelAnnouncementDict,
+    NodeAnnouncementDict,
+    ChannelUpdateDict,
+]
+
+# Generic plugin event
+class PluginEvent(BasePluginEvent):
+    parsed: ParsedGossipDict
+```
+
+These definitions can be found in the [lnhistoryclient.model.types](https://github.com/ln-history/ln-history-python-client/blob/main/lnhistoryclient/model/types.py) module, which provides type annotations and structure for downstream consumers and IDEs.
+
+
+### ⚙️ PlatformEvent: Validated Internal Event Structure
+A `PlatformEvent` is a stricter, validated structure that is used internally within the `ln-history` platform. These events follow a uniform schema enforced via Python `dataclasses`, and are validated at the beginning of the processing pipeline.
+
+**Benefits of this approach**:
+- **Strict schema enforcement** avoids runtime errors deeper in the pipeline.
+- **Improved traceability**: malformed or unexpected events can be dropped and logged for analysis.
+- Enables consistent downstream processing in Kafka consumers and analytics systems.
+
+```python
+from dataclasses import dataclass
+from typing import Dict
+
+@dataclass(frozen=True)
+class PlatformEventMetadata:
+    type: int
+    id: bytes  # SHA256 hash of raw_gossip_bytes
+    timestamp: int
+
+    def __str__(self) -> str:
+        return f"PlatformEventMetadata(type={self.type}, id={self.id.hex()}, timestamp={self.timestamp})"
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "type": self.type,
+            "id": self.id.hex(),
+            "timestamp": self.timestamp,
+        }
+
+@dataclass(frozen=True)
+class PlatformEvent:
+    metadata: PlatformEventMetadata
+    raw_gossip_bytes: bytes
+
+    def __str__(self) -> str:
+        return f"PlatformEvent(metadata={self.metadata}, raw_gossip_bytes={self.raw_gossip_bytes.hex()})"
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "metadata": self.metadata.to_dict(),
+            "raw_gossip_bytes": self.raw_gossip_bytes.hex(),
+        }
+```
+Before a `PluginEvent` is processed further, it is converted into a `PlatformEvent` using transformation and validation logic. If the event doesn't meet the required structure (e.g., missing fields, invalid encoding), it will be dropped early, ensuring robustness of the pipeline.
+
+### 🔗 Where to Find These Models
+All relevant types and data structures for `PluginEvent` and `PlatformEvent` can be found in the ln-history Python client, specifically in the [lnhistoryclient.model.types](https://github.com/ln-history/ln-history-python-client/blob/main/lnhistoryclient/model/) module.
+
+This separation of plugin-facing vs platform-facing types provides both flexibility for **plugin developers and stability for data consumers**.
