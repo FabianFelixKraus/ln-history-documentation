@@ -104,7 +104,7 @@ class PluginEventMetadata(TypedDict):
 # Base structure for all plugin events
 class BasePluginEvent(TypedDict):
     metadata: PluginEventMetadata
-    raw_gossip_bytes: bytes
+    raw_gossip_hex: str
 
 # Extended plugin event types
 class PluginChannelAnnouncementEvent(BasePluginEvent):
@@ -145,32 +145,34 @@ from typing import Dict
 @dataclass(frozen=True)
 class PlatformEventMetadata:
     type: int
-    id: bytes  # SHA256 hash of raw_gossip_bytes
+    id: str  # SHA256 hash as hex string of raw_gossip_hex of the PlatformEvent
     timestamp: int
 
     def __str__(self) -> str:
-        return f"PlatformEventMetadata(type={self.type}, id={self.id.hex()}, timestamp={self.timestamp})"
+        return f"PlatformEventMetadata(type={self.type}, id={self.id}, timestamp={self.timestamp})"
 
     def to_dict(self) -> Dict[str, object]:
         return {
             "type": self.type,
-            "id": self.id.hex(),
+            "id": self.id,
             "timestamp": self.timestamp,
         }
+
+from dataclasses import dataclass
+from typing import Dict
+
+from lnhistoryclient.model.platform_internal.PlatformEventMetadata import PlatformEventMetadata
 
 @dataclass(frozen=True)
 class PlatformEvent:
     metadata: PlatformEventMetadata
-    raw_gossip_bytes: bytes
+    raw_gossip_hex: str
 
     def __str__(self) -> str:
-        return f"PlatformEvent(metadata={self.metadata}, raw_gossip_bytes={self.raw_gossip_bytes.hex()})"
+        return f"PlatformEvent(metadata={self.metadata}, raw_gossip_hex={self.raw_gossip_hex})"
 
     def to_dict(self) -> Dict[str, object]:
-        return {
-            "metadata": self.metadata.to_dict(),
-            "raw_gossip_bytes": self.raw_gossip_bytes.hex(),
-        }
+        return {"metadata": self.metadata.to_dict(), "raw_gossip_hex": self.raw_gossip_hex}
 ```
 Before a `PluginEvent` is processed further, it is converted into a `PlatformEvent` using transformation and validation logic. If the event doesn't meet the required structure (e.g., missing fields, invalid encoding), it will be dropped early, ensuring robustness of the pipeline.
 
