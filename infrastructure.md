@@ -180,3 +180,32 @@ Before a `PluginEvent` is processed further, it is converted into a `PlatformEve
 All relevant types and data structures for `PluginEvent` and `PlatformEvent` can be found in the ln-history Python client, specifically in the [lnhistoryclient.model.types](https://github.com/ln-history/ln-history-python-client/blob/main/lnhistoryclient/model/) module.
 
 This separation of plugin-facing vs platform-facing types provides both flexibility for **plugin developers and stability for data consumers**.
+
+
+
+## Updating channel_updates
+
+In case a channel_update has a missing to_timestamp this sql-query is able to add it, in case a more recent update has been made.
+
+```sql
+WITH ordered_updates AS (
+  SELECT
+    scid,
+    direction,
+    validity,
+    lower(validity) AS start_time,
+    LEAD(lower(validity)) OVER (
+      PARTITION BY scid, direction
+      ORDER BY lower(validity)
+    ) AS next_start
+  FROM channel_updates
+)
+UPDATE channel_updates cu
+SET validity = tstzrange(lower(cu.validity), ou.next_start)
+FROM ordered_updates ou
+WHERE
+  cu.scid = ou.scid AND
+  cu.direction = ou.direction AND
+  cu.validity = ou.validity AND
+  ou.next_start IS NOT NULL;
+```
