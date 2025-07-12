@@ -209,3 +209,44 @@ WHERE
   cu.validity = ou.validity AND
   ou.next_start IS NOT NULL;
 ```
+
+
+## Queries on the database:
+
+1. Get all `raw_gossip` for a given timestamp (snapshot)
+```sql
+SELECT rg.*
+FROM raw_gossip rg
+LEFT JOIN nodes_raw_gossip nrg ON rg.gossip_id = nrg.gossip_id
+LEFT JOIN nodes n ON nrg.node_id = n.node_id
+LEFT JOIN channels_raw_gossip crg ON rg.gossip_id = crg.gossip_id
+LEFT JOIN channels c ON crg.scid = c.scid
+WHERE 
+  (:snapshot_time <@ n.validity OR n.validity IS NULL)
+  AND
+  (:snapshot_time <@ c.validity OR c.validity IS NULL);
+```
+
+2. Get all `raw_gossip` between two timestamps (difference between two snapshots)
+```sql
+SELECT *
+FROM raw_gossip
+WHERE timestamp >= :from_time AND timestamp < :to_time;
+```
+
+3. Get all `raw_gossip` for a given `scid`
+```sql
+SELECT rg.*
+FROM raw_gossip rg
+JOIN channels_raw_gossip crg ON rg.gossip_id = crg.gossip_id
+WHERE crg.scid = :scid_value;
+```
+
+
+4. Get all `raw_gossip` for a given `node_id`
+```sql
+SELECT rg.*
+FROM raw_gossip rg
+JOIN nodes_raw_gossip nrg ON rg.gossip_id = nrg.gossip_id
+WHERE nrg.node_id = :node_id;
+```
