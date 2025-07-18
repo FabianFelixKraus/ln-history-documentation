@@ -103,7 +103,7 @@ CREATE TABLE channel_updates (
   scid VARCHAR(23) NOT NULL REFERENCES channels(scid),
   direction BOOLEAN NOT NULL,
   validity tstzrange NOT NULL, -- from_update_timestamp to to_update_timestamp as range
-  PRIMARY KEY (scid, direction)
+  PRIMARY KEY (scid, direction, validity)
 );
 ```
 
