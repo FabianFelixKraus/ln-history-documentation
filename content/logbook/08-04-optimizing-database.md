@@ -1,6 +1,7 @@
 +++
 title = "How to optimize a database"
 description = "Bringing down query execution time from minutes to seconds"
+date="2025-08-04"
 +++
 
 ## Introduction
