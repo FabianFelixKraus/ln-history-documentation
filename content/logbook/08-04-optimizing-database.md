@@ -158,7 +158,7 @@ I realized that my initial expectation was completly different than the outcome.
 In retrospective I was subborn to normalizing the database just because I have only seen it that way before. By working on this problem for multiple weeks I got a deep understanding of it.
 The whole debate about the database schema reminded me of the famous qoute `All problems in computer science can be solved by another level of indirection, except for the problem of too many layers of indirection` by `David Wheeler`. I abstracted the database schema such that every possible analysis could be done but by doing so I distanced the requirements from the database schema. This lead to overall weak performaing queries. By removing the abstraction and defining the schema specifically for the requirements, I was able to solve this problem. 
 
-I also learned that for getting a "*near optimal*" result in software engineering means that you run some software in default configuration. It means to actually go as close to the machine level as possible and twisting & tweaking removing every abstraction the software might create or even build it from scratch.
+I also learned that for getting a "*near optimal*" result in software engineering means that you *do not* run some software in default configuration. It means to actually go as close to the machine level as possible removing every abstraction the software might create or even build it from scratch.
 
-It took a lot of will power and endurance to start all over again with a new database schema twice. I am happy to get this working and knowing every tiny detail of the database.
+It took a lot of will power and endurance to start all over again with a new database schema twice. I am happy that I got this working with an extensive knowledge of the database.
 By playing around, testing and restarting with a new schema I gained a lot of experience and feel much more confident about sql databases specifically Postgres.
