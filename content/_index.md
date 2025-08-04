@@ -51,59 +51,44 @@ You can build the database yourself by creating the following tables:
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
--- 1. GossipMessageTypes
-CREATE TABLE gossip_message_types (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL UNIQUE
+-- TABLE: Nodes
+CREATE TABLE Nodes (
+  node_id CHAR(66) PRIMARY KEY NOT NULL,
+  validity TSTZRANGE,
+  from_timestamp TIMESTAMPTZ GENERATED ALWAYS AS (lower(validity)) STORED,
+  last_seen TIMESTAMPTZ GENERATED ALWAYS AS (upper(validity)) STORED
 );
 
-INSERT INTO gossip_message_types (id, name) 
-VALUES 
-  (256, 'channel_announcement'),
-  (257, 'node_announcement'),
-  (258, 'channel_update');
-
--- 2. RawGossip
-CREATE TABLE raw_gossip (
-  gossip_id BYTEA PRIMARY KEY CHECK (octet_length(gossip_id) = 32),  -- sha256 is 32 bytes
-  gossip_message_type INTEGER NOT NULL REFERENCES gossip_message_types(id),
+-- TABLE: NodesRawGossip
+CREATE TABLE NodesRawGossip (
+  gossip_id CHAR(64) PRIMARY KEY NOT NULL,
+  node_id CHAR(66) NOT NULL REFERENCES Nodes(node_id),
   timestamp TIMESTAMPTZ NOT NULL,
   raw_gossip BYTEA NOT NULL
 );
 
--- 3. NodesRawGossip
-CREATE TABLE nodes_raw_gossip (
-  gossip_id BYTEA PRIMARY KEY REFERENCES raw_gossip(gossip_id),
-  node_id BYTEA NOT NULL CHECK (octet_length(node_id) = 33)  -- 33 bytes
-);
-
--- 4. Nodes
-CREATE TABLE nodes (
-  node_id BYTEA PRIMARY KEY CHECK (octet_length(node_id) = 33) -- 33 bytes,
-  validity tstzrange NOT NULL  -- from_timestamp, last_seen as range
-);
-
--- 5. ChannelsRawGossip
-CREATE TABLE channels_raw_gossip (
-  gossip_id BYTEA PRIMARY KEY REFERENCES raw_gossip(gossip_id),
-  scid VARCHAR(23) NOT NULL
-);
-
--- 6. Channels
-CREATE TABLE channels (
+-- TABLE: Channels
+CREATE TABLE Channels (
+  gossip_id CHAR(64),
   scid VARCHAR(23) PRIMARY KEY,
-  source_node_id BYTEA NOT NULL REFERENCES nodes(node_id),
-  target_node_id BYTEA NOT NULL REFERENCES nodes(node_id),
-  validity tstzrange NOT NULL, -- from_timestamp to to_timestamp
-  amount_sat INTEGER
+  source_node_id CHAR(66) NOT NULL REFERENCES Nodes(node_id),
+  target_node_id CHAR(66) NOT NULL REFERENCES Nodes(node_id),
+  validity TSTZRANGE NOT NULL,
+  from_timestamp TIMESTAMPTZ GENERATED ALWAYS AS (lower(validity)) STORED,
+  to_timestamp   TIMESTAMPTZ GENERATED ALWAYS AS (upper(validity)) STORED,
+  amount_sat INT,
+  raw_gossip BYTEA
 );
 
--- 7. ChannelUpdates
-CREATE TABLE channel_updates (
-  scid VARCHAR(23) NOT NULL REFERENCES channels(scid),
-  direction BOOLEAN NOT NULL,
-  validity tstzrange NOT NULL, -- from_update_timestamp to to_update_timestamp as range
-  PRIMARY KEY (scid, direction, validity)
+-- TABLE: ChannelUpdates
+CREATE TABLE ChannelUpdates (
+  gossip_id CHAR(64) PRIMARY KEY,
+  scid VARCHAR(23) NOT NULL REFERENCES Channels(scid),
+  direction BIT NOT NULL,
+  validity TSTZRANGE NOT NULL,
+  from_update_timestamp TIMESTAMPTZ GENERATED ALWAYS AS (lower(validity)) STORED,
+  to_update_timestamp   TIMESTAMPTZ GENERATED ALWAYS AS (upper(validity)) STORED,
+  raw_gossip BYTEA
 );
 ```
 
@@ -120,4 +105,4 @@ To get an overall view of the topology we want to show different metrics of the 
 We try to find correlations of the Bitcoin Lightning Network with the Bitcoin blockchain. More precisely, we research if the cost of a payment in the Lightning Network correlates with the fees on the Bitcoin blockchain. Those results could be particularly interesting for (routing) nodes that need to manage their liquidity as cost-efficient as possible. -->
 
 ## 💻 Api
-See [here](https://api.ln-history.info) for the swagger documentation of our API. The backend code can be found on [GitHub](https://github.com/FabianFelixKraus/LN-history) or mirrored on my univerisities [GitLab](https://git.tu-berlin.de/lightning-network-analysis/ln-history)
+See [here](https://apiv2.ln-history.info/swagger/index.html?urls.primaryName=LN-history+API+V1) for the swagger documentation of our API. The backend code can be found on [GitHub](https://github.com/FabianFelixKraus/LN-history) or mirrored on my univerisities [GitLab](https://git.tu-berlin.de/lightning-network-analysis/ln-history)

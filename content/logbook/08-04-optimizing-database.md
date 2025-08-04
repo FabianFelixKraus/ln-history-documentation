@@ -46,8 +46,8 @@ My initial idea was to store the topology in a large [temporal graph](https://en
 Since every node and edge has a `from_timestamp` and `to_timestamp` (`NULL` if it still exists), it fits the use case of graph databases.
 After playing around with [neo4j](https://neo4j.com/) - one of the most popular graph databases - I realized that the performance I was looking for [ln-history](https://github.com/ln-history) is not reachable.
 
-### V1: Parsed relational database 
-![Database schema of v1](08-04-challenge-parsed.png)
+### v1: Parsed relational database 
+![Database schema of v1](../08-04-challenge-parsed.png)
 I talked with my mentor [René](https://www.rene-pickhardt.de/) about it and he recommended to go for a sql database, where the gossip messages are cleverly stored.
 He also made me realize that for this project and (my) performance expectations its highly unlikely that a software exists that I can just use. I will have to think about a solution independently of the technology and very close to the machine and not just use a software. 
 I was *blinded* by the third and fourth requirement which will need some sort of table for the channels and nodes, such that I first decided to parse all gossip messages and store them in a normalized relational schema.
@@ -55,24 +55,25 @@ This design only has two advantages:
 1. The data is stored without redundance, meaning no handling of "synchronizing" the same data
 2. The gossip messages will be parsed before insertion and do not need to get parsed again 
 
-On the other hand there is a plethora of counter arguments: 
+On the other hand there are strong counter arguments: 
 1. Since the unparsed gossip messages store the data very compact, parsing them takes orders of magnitude of more storage 
+2. You will have to `JOIN` tables, which is significantly more costly than `SELECT`ing from a table (I realized this after v2)
 
 The query execution is faster for smaller tables. There is no need to lose this very useful compacted data structure.
 [Christian Deckers](https://scholar.google.ch/citations?user=ZaeGlZIAAAAJ&hl=de) [timemachine script](https://github.com/lnresearch/topology) can run through 5 million gossip messages on a Macbook Pro M1 in 5 minutes, making the argument that "saving" the parsing time obsolete.
 
 Especially the second counter argument 
 
-### V2: Raw relational database
-![Database schema of v1](08-04-challenge-raw-relational.png)
+### v2: Raw relational database
+![Database schema of v1](../08-04-challenge-raw-relational.png)
 The argument of storing the data in a relational manner without redundancy kept in me. I was talking with [René](https://www.rene-pickhardt.de/) about an ideal design and he proposed a columnar design which would be efficient for snapshot generation but retrieving node or channel information would not be as simple. 
 Therefore I continued with a mix out of both worlds (relational schema but storing the raw bytes). 
 After inserting millions of gossip messages (`2018`-`2023`) I tested it and a query for snapshot generation took well over `2` minutes. 
 Using Postges `EXPLAN ANALYZE` I could see the estimated costs of the query. The big problem were the `JOIN` operations. Although I indexed the columns that got joined, joining two tables with millions of rows takes time.
 This design also had a flaw: To fulfill the first two requirements (snapshot generation) multiple joins over large tables where necessary.
 
-### V3: Raw "column-reduced" database
-![Database schema of v1](08-04-challenge-raw-columnar.png)
+### v3: Raw "column-reduced" database
+![Database schema of v3](../08-04-challenge-raw-columnar.png "Database schema of v3")
 The first crutial step that brought down the query time from 2 minutes to 30 seconds was modifying the schema. Although I had the four requirements in mind, where the thrid and fourth are get_raw_gossip_by_scid/node_id. Those queries are ideal if there is a seperate nodes and channels, channel_updates table. I thought a lot about it and realized that I created a 1:1 mapping between the raw_gossip.raw_gossip to nodes_raw_gossip as well as channels_raw_gossip. This first looked nice and more normalized but now created a lot of performance problems. 
 
 Looking back at the previous approaches and listening to Renès advice I simplified the schema, removing almost every foreign key constraint to only have one join operation left for the snapshot generation. (Which is fine since the table that gets joined has less than `100000` rows)
