@@ -142,6 +142,7 @@ This whole topic opened a new world for me. Before the summer school I already w
 - Configuring your database instance like increasing RAM or CPU power is less effective than optimizing the queries
 - *ALWAYS* think of both ways: How to `INSERT` and `READ` data
 - Using `COPY (<query>) TO '<path>' (FORMAT binary)` is much faster than `SELECT <query>`
+- Think about which tables get used frequently, especially in `JOIN`s. Build indices for the columns used most and think about multi-dimensional indices 
 - When working with analytical (`READ` heavy) queries: Store he data clustered such that the physical location of the data on disk correlates with the actual value of the data
 - Use tools like `EXPLAIN (ANALYZE, BUFFER)` to see what *happens under the hood*
 - Plan and take the time to optimize the database schema first before anything else, it will likely be the first bottleneck of the platform 
