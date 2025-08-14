@@ -57,7 +57,7 @@ This decision influenced the the database schema design heavily.
 2. Another important detail is the format in which the snapshots, or node/channel information gets returned by the platform. Initially I tried to parse the data right away, creating more problems than solving.
 Deciding in the requirements that the format of the result is the raw gossip foramt in `bytes` influenced almost every component of the platform.
 
-My advice is that the requirements should not be as concrete as possible. I would never start a project with a vague requirement a la "Have a database to perform analytical queries about Lightning Network gossip".
+My advice is that the requirements should be as concrete as possible. I would never start a project with a vague requirement a la "Have a database to perform analytical queries about Lightning Network gossip".
 
 
 ## Architecture
@@ -105,7 +105,7 @@ If yes: try to reorder components. If some lines still cross: Your architecture 
 
 _"Hyper" management: Tickets, Milestones etc. vs no management at all: Finding the sweet spot when working alone_
 
-Two realities clash: As soon as a project is getting complex managing it can enable you to get so much more done, especially reducing doing work twice by efficient planning.
+Two realities clash: As soon as a project is getting complex managing it can enable you to get so much more done, especially reducing to do the same work twice.
 
 Doing classic SCRUM but only with yourself feels and sounds ridiculous. But some concepts of SCRUM make so much sense and I would highly recommend them doing:
 1. At the beginning of the day, take a few minutes and think about which tasks are the most important. Having an overview over the work that needs to be done is very helpful.
@@ -117,12 +117,12 @@ Doing classic SCRUM but only with yourself feels and sounds ridiculous. But some
 
 ## Development
 
-The core of the *ln-history* project was to develop and actually implement the services. Besides all the other mentioned "adminastrative" topics mentioned before, I was able to extend my knowledge about software development so much! 
+The core of the *ln-history* project was to develop and actually implement the services. Besides all the other mentioned "adminastrative" topics mentioned, I was able to extend my knowledge about software development so much! 
 Here are some points that I find worthy to touch.
 
 ### From PoC to Production
 
-I build the micro services in a way that I first built a Proof-of-Concept PoC, meaning that the requirement of that micro service is actually working.
+I build the micro services in a way that I first built a Proof-of-Concept (PoC), meaning that the requirement of that micro service is actually working.
 If this was possible I went over to "upgrade" this version to be "production-level".
 
 I like this way of working and follow the [80 / 20 - principle](https://en.wikipedia.org/wiki/Pareto_principle). 
@@ -150,14 +150,11 @@ My advise specifically when looking at databases: Use a widespread "multi-use" t
 
 ### Usefulness and uselessness of clean code
 
-Clean code has many advantages but can cost a lot of time. Before getting the code 100% clean, stop at 90% and continue building, even if it's open source and you might feel not happy with it knowing that you can do better.
+Clean code has many advantages but can cost a lot of time. Before making the code 100% clean, it’s better to stop at 90% and keep building — even if it’s open source and you feel unhappy knowing you could do better. Using automatic linting, prettifiers, or formatters to check your code quality is often unnecessary early on, since frequent changes make those corrections obsolete until the code has proven itself in production.
 
-Using automatic linting, prettifier, formatter etc, can cost a lot of time. Only do this if the code has "proven itself in production for some time", before that, too many changes will occur that make those correction obsolete.
+During development I spent a good amount of time cleaning up and perfectionizing the code, which made me tired and even stopped me from committing regularly. In retrospect, I should have been more bold.
 
-During the development I spent a good amount of time cleaning up and perfectionizing the code. This made me tired and even stopped to commit regularly.
-In retro perspective I should have been _more bold_. 
-
-[René](https://www.rene-pickhardt.de/) showed me this inspiring meta-article [Be Bold](https://en.wikipedia.org/wiki/Wikipedia:Be_bold).
+[René](https://www.rene-pickhardt.de/) showed me this inspiring article [Be Bold](https://en.wikipedia.org/wiki/Wikipedia:Be_bold).
 
 
 
@@ -197,22 +194,23 @@ def setup_logging(log_dir: str = "logs", log_file: str = "logs.log") -> Logger:
 
 ### Using AI
 
-_I am still undecided about the usefulness of using large language models (LLM) for development - I might update this section_
+_I might update this section_
 
 While working on **ln-history** I have countless examples where those models: [Claude](https://claude.ai/), [ChatGPT 4o](https://openai.com/index/hello-gpt-4o/) and [ChatGTP 5](https://openai.com/index/introducing-gpt-5/) failed.
 I sometimes spend many minutes crafting a prompt in the hope they would resolve it.
 
-On the other hand there have been situations where those models hit the nail on the head. Getting the soltion that 'just works' for a rather complex problem in seconds is the dream.
+On the other hand there have been situations where those models hit the nail on the head. Getting the solution that 'just works' for a rather complex problem in seconds is the dream.
 
 Currently I am more of a fan of doing it yourself without AI. It is more like a personized [stackoverflow](https://stackoverflow.com/questions), but not a replacement for software development as a whole.
 The context of my platform was most times just way too much for it to understand it and giving a summarized context takes time writing the prompt that might not even produce a valuable result.
 
-From a "fun" perspective I really like to think and develop the code by myself. When errors appear, I can spot them quickly and fix it. Debugging and fixing code from a LLM is painful.
+From a "fun" perspective I really like to think and develop the code by myself. When errors appear, I can spot them quickly and fix them. Debugging and fixing code from a LLM is painful.
 
-On the other hand I realized that it takes less "brain power" if you work a whole day constantly requesting the LLM instead of purly doing it yourself. I might be able to create more output in a day when using LLM than doing it myself.
+On the other hand I realized that it takes less "brain power" if you work a whole day constantly requesting the LLM instead of purly doing it yourself. I might be able to create more output in a day when using a LLM than doing it myself.
 But when looking on a longer time-scale I guess that I am also learning and memorizing how the code is actually working much easier if I came up with it instead of a LLM.
 This way in the long run I am more leaning towards writing the code by yourself.
 
+All the texts of the blog and the documentation have been written by myself without AI. 
 
 
 ## Documentation
@@ -224,7 +222,7 @@ Firstofall, it should be obvious that documenting your code is necessary and sho
 I started to write the [documentation](https://docs.ln-history.info) close to the end of the project. In retro perspective I should have written it simultaneously with the development. As soon as I "upgraded" the components from "PoC" to "production-level". I could even recommend to write the documentation first and then "upgrade" the component to "production-level", much like the idea of Test-Driven-Development. It gives yourself an overview as well as something to see for "Product Owner" / supervisor.
 
 A challenge I faced during the project: _How to show progress, especially in the context of databases_
-I realized that documenting is a very good way to show progress. In specific when working with databases, where there is neither code nor text I recommend to list the queries and their EXPLAIN (ANALYZE) result and discuss the costs, indexes (maybe even clustering) etc. This approach is like documenting your analysis although you are just setting things up.
+I realized that documenting is a very good way to show progress. In specific when working with databases, where there is neither code nor text I recommend to list the queries and their `EXPLAIN (ANALYZE)` result and discuss the costs, indexes (maybe even clustering) etc. This approach is like documenting your analysis although you are just setting things up.
 
 
 
@@ -239,10 +237,10 @@ I highly recommend to not save on this end. Sometimes your development time migh
 
 
 ## Conclusion:
-Unlike mathematics and other sciences, engineering solutions in computer science is not exact and many (completely) different solutions can yield to the same result.
+Unlike mathematics and other sciences, engineering on a solution in computer science is not exact and many (completely) different solutions can yield the same result.
 I am certain that with experience you develop a feeling in your gut with which you can decide much quicker and accurate which solutions bring you a result and which ones do not.
-This feeling (based on countless hours of expierience) guides you where the _sweet spot_ I mentioned in the introduction. 
+This feeling (based on countless hours of expierience) guides you to the _sweet spot_ I mentioned in the introduction. 
 
 I am happy with my participation and learnings at [summer of Bitcoin 2025](https://summerofbitcoin.org/).
 Having the chance to discuss with [René](https://www.rene-pickhardt.de/) about a wide range of topics, gave me so many heureka moments where it made "click".
-I also gained confidence that I am able to solve the 
+I also gained confidence that I am able to create impactful software. 
