@@ -377,14 +377,28 @@ WHERE nrg.node_id = :node_id;
 
 - We count a `channel_dying` message not as an update to the last_seen value of a node
 
+- Edge Case: Collecting a channel_update of an unannounced channel:
+Via scid get the amount_sat of that channel.
+Add this channel to the channels table although there is no raw_gossip for that announcement (also no infomation about the `node_id`)
+
+
+
+- Edge Case: Collecting a channel_announcement of unannounced nodes:
+Add new node with `node_id` of channel_announcement to nodes table although there is no raw_gossip for this announcement
+
 - We define *snapshot at a given timestamp t* of the Lightning Network as following:
-The collection of all channel_update gossip messages that were published between `t` and `t-14 days` and all channel_announcement messages.
+The collection of all channel_update gossip messages that were published between `t` and `t-14 days` and all valid channel_announcement and node_announcements messages.
+
+Q: Are there channels that have no channel_update
 
 Note: This definition aligns with the [rationale in BOLT #7](https://github.com/lightning/bolts/blob/6c5968ab83cee68683b4e11dc889b5982a2231e9/07-routing-gossip.md?plain=1#L547): 
 
 
-We define the difference between two snapshots of the Lightning Network as following:
+- We define the *difference between two snapshots* of the Lightning Network as following:
+We take a look on data-level NOT message-level, meaning that if during t_0 and t_1 a node just reannounced the same information, e. g. node_announcement or channel_update with same values (same base and ppm fee), this is NOT part of the difference
 
-We take a look on data-level NOT message-level, meaning that when during t_0 and t_1 a just reannounced the same information, e. g. node_announcement or channel_update with same values (same base and ppm fee), this is NOT part of the difference
 
-Note:
+
+- As long as I dont have a good way to see in the blockchain if a channel has been closed, I will go with this one:
+
+    - Definition of closed channel -> If a channel has not send a channel_update message for 14 consecutive days. The from_timestamp of that channel is considered the to_timestamp of that channel (as well as the to_timestamp of that channel_update)
